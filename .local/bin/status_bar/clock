@@ -1,0 +1,8 @@
+#!/bin/sh
+
+case $BLOCK_BUTTON in
+	1) setsid -f st -n float-center -g 150x40 -e firefox -P AppMode -ssb "https://calendar.google.com/calendar/"  ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+date "+ %a %Y %b %d  %H:%M"

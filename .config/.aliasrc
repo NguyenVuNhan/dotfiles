@@ -1,0 +1,59 @@
+alias poff='sudo poweroff'
+alias v=nvim
+alias rscp="rsync -aq --P"
+alias o="xdg-open"
+alias e="exit"
+
+# Dotfiles manager
+alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+
+# Navigating
+alias ..='cd ..'
+
+# Enable color
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# ls alias
+alias ls='ls --color=auto'
+alias la='ls -A'
+alias l='ls -CF'
+alias lh='ls -Ad .*'
+alias ll='ls -alF'
+
+# Config
+alias aliasrc='$EDITOR $HOME/.config/.aliasrc'
+alias shortcutrc='$EDITOR $HOME/.config/.shortcutrc'
+alias zshrc='$EDITOR $HOME/.config/zsh/.zshrc'
+alias vimrc='$EDITOR $HOME/.config/nvim/init.vim'
+alias tmuxrc='$EDITOR $HOME/.config/tmux/.tmux.conf'
+alias i3wmrc='$EDITOR $HOME/.config/i3/config'
+
+alias update='sudo apt-get -y update && sudo apt-get -y upgrade'
+
+# fzf
+alias cdfzf='cd $(fzf)'
+alias vfzf='$EDITOR $(fzf)'
+
+# fun
+alias iloveyou='figlet -ctW I LOVE YOU | lolcat -a -s 30 -F 0.2'
+alias n2s='cdn s N2S && o $(ls *.mp4 | shuf -n 1) > /dev/null && cd -'
+
+# Copy to system clipboard
+alias sysclip="xclip -selection clipboard"
+
+# Other
+alias google-chrome="google-chrome --password-store=gnome"
+alias SyncSnip="for f in ~/.config/nvim/UltiSnips/*.snippets; do convert-snippets $f ; done;"
+
+# Docker alias due to my lizyness
+alias docker="sudo docker"
+alias docker-compose="sudo docker-compose"
+
+# Special script require to sourcing
+alias bfm=". bfm"
+
+hc() { eval $(tac $XDG_CACHE_HOME/zsh/history | cut -d";" -f2- | fzf); }

@@ -1,0 +1,28 @@
+#!/bin/sh
+
+switchEngine() {
+    engine=$(ibus engine)
+    case $engine in
+        Unikey)
+            ibus engine xkb:us::eng
+            ;;
+        *eng)
+            ibus engine Unikey
+            ;;
+    esac
+}
+
+case $BLOCK_BUTTON in
+    1) echo 1 && switchEngine;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+engine=$(ibus engine)
+case $engine in
+    Unikey)
+        echo VI
+        ;;
+    *eng)
+        echo EN
+        ;;
+esac

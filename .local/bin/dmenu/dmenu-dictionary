@@ -1,0 +1,8 @@
+#!/bin/sh
+
+url="https://www.merriam-webster.com/dictionary"
+query=$(echo "" | dmenu -p "Search: ")
+
+# https://askubuntu.com/questions/487936/how-do-i-open-fixed-window-in-firefox-like-chrome-app-mode/1230761#1230761
+st -n float-center -g 120x30\
+    -e firefox -P AppMode -ssb "$url/$query"

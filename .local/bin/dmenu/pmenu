@@ -1,0 +1,36 @@
+#!/usr/bin/sh
+
+cmds="\
+ (l)lock
+ (e)lockout
+ (p)poweroff
+ (s)suspend
+ (r)reboot
+ (h)hibernate
+ (ld)leave dwm"
+
+chosen=$(echo "$cmds" | dmenu -i -p "Select power option:" -l 8)
+
+case $chosen in
+    ' (l)lock')
+        slock -m "$(cowsay "$(fortune)"; echo Locked at $(date "+%a %d, %H:%M:%S"))"
+        ;;
+    ' (e)lockout')
+        pkill dwm && pkill -KILL -u $USER
+        ;;
+    ' (p)poweroff')
+        poweroff
+        ;;
+    ' (s)suspend')
+        systemctl suspend
+        ;;
+    ' (r)reboot')
+        reboot
+        ;;
+    ' (h)hibernate')
+        systemctl suspend-then-hibernate
+        ;;
+    ' (ld)leave dwm')
+        pkill dwm
+        ;;
+esac

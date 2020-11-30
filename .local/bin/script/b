@@ -1,0 +1,58 @@
+#!/usr/bin/bash
+
+OPENER="xdg-open"
+
+# Bookmark
+BOOKMARKS="$HOME/.config/.bookmarks"
+[ ! -f $BOOKMARKS ] && echo "No bookmarks file found" && exit
+
+print_usage() {
+    echo "Usage:"
+    echo "-i, --input <filetype> <target> : open bookmark for given target with file type"
+    echo "-h : help"
+    exit 0
+}
+
+target_opener() {
+    if [ -z "$1" ]; then
+        echo "No file type given."
+    fi
+    if [ -z "$2" ]; then
+        echo "No target specified."
+    fi
+
+    value=$(sed -n "s/\s*#.*//g;s/\s*\;/\;/g;/$1/p" $BOOKMARKS | grep ";$2;" | head -n 1 | sed "s/.*;//g")
+    case "$1" in
+        web)
+            firefox --new-tab "$value" ;;
+        file)
+            st -e $OPENER "$value" ;;
+        dir)
+            cd "$value" && st ;;
+        cmd)
+            echo $value
+            st -n float-center -A 1 -g 50x10 -e $value
+    esac
+}
+
+while test $# -gt 0; do
+    case $1 in
+        -i|--input)
+            shift
+            filetype=$1
+            shift
+            target=$1
+            shift ;;
+        -h|--help|*)
+            print_usage
+            exit 0 ;;
+    esac
+done
+
+if [[ -z $target && -z $filetype ]]; then
+    chosen=$(sed "s/\s*#.*//g;/^$/d;s/\s*\;/\;/g;;s/\(.*\)\;\(.*\)\;.*$/(\1) \2/" $XDG_CONFIG_HOME/.bookmarks | fzf)
+    target=$(echo $chosen | sed "s/(.*)\s//g")
+    filetype=$(echo $chosen | sed "s/(\(.*\))\s.*/\1/g")
+fi
+
+target_opener "$filetype" "$target"

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+case $BLOCK_BUTTON in
+    1) "$TERMINAL" -e nmtui ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+case "$(cat /sys/class/net/w*/operstate 2>/dev/null)" in
+	up) icon="$(awk '/^\s*w/ { print " ", int($3 * 100 / 70) "% " }' /proc/net/wireless)" ;;
+	down)
+        case "$(cat /sys/class/net/e*/operstate 2>/dev/null)" in
+        	up) icon="" ;;
+        	down) icon=" " ;;
+        esac
+        ;;
+esac
+
+echo $icon

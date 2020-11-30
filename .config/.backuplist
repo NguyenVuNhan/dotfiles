@@ -1,0 +1,64 @@
+# List of backup file
+$HOME/.config/.backuplist
+$HOME/.config/.aliasrc
+$HOME/.config/.clang-format
+$HOME/.config/compton.conf
+
+$HOME/.zprofile
+$HOME/.xinitrc
+
+# Script
+$HOME/.local/bin/dmenu/pmenu
+$HOME/.local/bin/dmenu/dmenu-dictionary
+$HOME/.local/bin/dmenu/dmenu-search
+$HOME/.local/bin/dmenu/dmenu-sink
+$HOME/.local/bin/dmenu/dmenu-spotlight
+
+$HOME/.local/bin/script/b
+$HOME/.local/bin/script/display-switcher
+
+$HOME/.local/bin/status_bar/battery
+$HOME/.local/bin/status_bar/clock
+$HOME/.local/bin/status_bar/cpu
+$HOME/.local/bin/status_bar/ibus_language
+$HOME/.local/bin/status_bar/internet
+$HOME/.local/bin/status_bar/microphone
+$HOME/.local/bin/status_bar/volume
+$HOME/.local/bin/status_bar/weather
+
+# Neovim
+$HOME/.config/nvim/init.vim
+$HOME/.config/nvim/general/
+$HOME/.config/nvim/plug-config/
+$HOME/.config/nvim/snips/
+$HOME/.config/nvim/coc-settings.json
+$HOME/.config/coc/extensions/package.json
+$HOME/.config/coc/ultisnips/
+
+# dunst
+$HOME/.config/dunst/
+
+# i3wm
+$HOME/.config/i3/
+
+# lf
+$HOME/.config/lf/
+
+# polybar
+$HOME/.config/polybar/
+
+# rofi
+$HOME/.config/rofi/
+
+# tmux
+$HOME/.config/tmux/
+
+# zsh
+$HOME/.config/zsh/.p10k.zsh
+$HOME/.config/zsh/.zshrc
+
+# Fonts
+$HOME/.local/share/fonts/
+
+# Wallpaper
+$HOME/Pictures/wallpaper/

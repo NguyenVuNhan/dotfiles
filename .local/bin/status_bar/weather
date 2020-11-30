@@ -1,0 +1,53 @@
+#!/bin/sh
+
+case $BLOCK_BUTTON in
+    1) st -n float-center -A 1 -g 130x30 -e sh -c "curl wttr.in | less -Srf" ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+get_duration() {
+    osname=$(uname -s)
+    case $osname in
+        *BSD) date -r "$1" -u +%H:%M;;
+        *) date --date="@$1" -u +%H:%M;;
+    esac
+}
+
+KEY="22a3f6d7145c235f47d557de392a71fc"
+UNITS="metric"
+SYMBOL="°"
+
+API="https://api.openweathermap.org/data/2.5"
+
+getWeather() {
+	location=$(curl -s "ipinfo.io/loc")
+
+    if [ -n "$location" ]; then
+    	location_lat="$(echo "$location" | cut -d, -f1)"
+    	location_lon="$(echo "$location" | cut -d, -f2)"
+
+    	current=$(curl -sf "$API/weather?appid=$KEY&lat=$location_lat&lon=$location_lon&units=$UNITS")
+    	forecast=$(curl -sf "$API/forecast?appid=$KEY&lat=$location_lat&lon=$location_lon&units=$UNITS&cnt=1")
+    fi
+
+	if [ -n "$current" ] && [ -n "$forecast" ]; then
+		current_temp=$(echo "$current" | jq ".main.temp" | cut -d "." -f 1)
+		current_des=$(echo "$current" | jq -r ".weather[0].description")
+
+		forecast_temp=$(echo "$forecast" | jq ".list[].main.temp" | cut -d "." -f 1)
+		forecast_des=$(echo "$forecast" | jq -r ".list[].weather[0].description")
+
+		if [ "$current_temp" -gt "$forecast_temp" ]; then
+			trend=""
+		elif [ "$forecast_temp" -gt "$current_temp" ]; then
+			trend=""
+		else
+			trend=""
+		fi
+
+        echo " $current_temp$SYMBOL $trend $forecast_temp$SYMBOL ($current_des)"
+	fi
+}
+
+getWeather
+

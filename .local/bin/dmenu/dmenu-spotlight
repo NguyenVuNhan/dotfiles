@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+HIS_SIZE=100
+HIS_TMP="/tmp/dmenu_spotlight_history"
+HISTORY="$HOME/.cache/dmenu_spotlight/history"
+[ ! -f $HISTORY ] && echo "No history file found" && exit
+BOOKMARKS="$HOME/.config/.bookmarks"
+[ ! -f $BOOKMARKS ] && echo "No bookmarks file found" && exit
+
+select=$( echo "$(tail -n $HIS_SIZE $HISTORY | sed 's/^/(history) /' | tac)
+$(sed "s/\s*\;/\;/g;s/\s*#.*//g;/^$/d" $BOOKMARKS | awk -F';' '{print ":b ("$1") "$2;}')
+$(dmenu_path)" | rofi -dmenu | sed 's/^(history) //g')
+if [[ ! -z $select ]]; then
+    sed "/$select/d" $HISTORY > $HIS_TMP
+    echo $select >> $HIS_TMP
+    [ $(wc -l < $HISTORY) -ge 100 ] && tail -n $HIS_SIZE > $HIS_TMP
+    mv $HIS_TMP $HISTORY
+else
+    exit 0
+fi
+
+option=$(echo $select | cut -d' ' -f1)
+query=$(echo $select | sed 's/:[A-Za-z]* //g')
+
+case "$option" in
+    ':b')
+        filetype=$(echo $query | sed 's/^(\(.*\)).*/\1/')
+        target=$(echo $query | sed 's/(.*)\s//g')
+        b -i "$filetype" "$target"
+        ;;
+    ':web')
+        firefox --new-tab "https://www.google.com/search?q=$query"
+        ;;
+    ':dic')
+        st -n float-center -g 120x30 \
+            -e firefox -P AppMode -ssb "https://www.merriam-webster.com/dictionary/$query"
+        ;;
+    *)
+        if [ ! -z $(dmenu_path | grep -qF $query && echo 1) ]; then
+            echo $query | ${SHELL:-"/bin/sh"} &
+        else
+            firefox --new-tab "https://www.google.com/search?q=$query"
+        fi
+        ;;
+esac

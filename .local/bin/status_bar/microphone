@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+case $BLOCK_BUTTON in
+    1) amixer set Capture toggle > /dev/null ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+STATUS=$(amixer get Capture | grep "\[on\]" | wc -l)
+if [ $STATUS -eq 2 ]; then
+    echo 
+else
+    echo  muted
+fi

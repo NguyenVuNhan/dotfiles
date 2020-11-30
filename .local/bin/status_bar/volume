@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Prints the current volume or 🔇 if muted.
+
+case $BLOCK_BUTTON in
+	1) pulsemixer --toggle-mute ;;
+	3) setsid -f "$TERMINAL" -n float-center -e pulsemixer ;;
+	4) pulsemixer --change-volume +5 ;;
+	5) pulsemixer --change-volume -5 ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+if [ $(pulsemixer --get-mute) = 1 ]; then
+    echo " muted"
+    exit
+fi
+
+vol="$(pulsemixer --get-volume | cut -d' ' -f1)"
+
+if [ "$vol" -gt "70" ]; then
+	icon=""
+elif [ "$vol" -gt "30" ]; then
+	icon=""
+else
+	icon=""
+fi
+
+echo "$icon $vol%"

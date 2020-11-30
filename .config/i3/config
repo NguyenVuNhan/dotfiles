@@ -1,0 +1,342 @@
+# ----------------------------------------------------------------------
+#	Global define
+# ----------------------------------------------------------------------
+font Fira Code 12
+
+# mod = windows key, sub = alt
+set $mod Mod4
+set $sub Mod1
+set $inner_gaps 10
+set $outer_gaps 10
+set $term --no-startup-id $TERMINAL
+set $wallpaper /home/nvn/Pictures/wallpaper/TmbCjky.jpg
+
+# define workspace
+set $ws1 1
+set $ws2 2
+set $ws3 3
+set $ws4 4
+set $ws5 5
+set $ws6 6
+set $ws7 7
+set $ws8 8
+set $ws9 9
+set $ws10 10
+
+# ----------------------------------------------------------------------
+#	Startup command
+# ----------------------------------------------------------------------
+# exec --no-startup-id minetime
+exec --no-startup-id ibus-daemon -x -d -r
+exec --no-startup-id xinput set-prop 12 324 1
+# exec --no-startup-id rambox
+# exec --no-startup-id minetime
+# exec --no-startup-id discord
+# exec --no-startup-id spotify
+exec --no-startup-id compton -b
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id nm-applet
+exec --no-startup-id $term -n dropdown_term -e tmux
+exec --no-startup-id $term -n dropdown_python -e python3
+exec --no-startup-id $HOME/.config/polybar/launch.sh
+exec --no-startup-id feh --bg-scale $wallpaper
+# exec --no-startup-id i3-autodisplay
+exec --no-startup-id display-visor -f -l
+exec --no-startup-id gnome-screensaver
+
+# ----------------------------------------------------------------------
+#	SratchPad
+# ----------------------------------------------------------------------
+# tmux window
+for_window 		[instance="dropdown_term"] floating enable
+for_window 		[instance="dropdown_term"] resize set 800 600
+for_window 		[instance="dropdown_term"] move scratchpad
+for_window 		[instance="dropdown_term"] border pixel 5
+bindsym $mod+u 	[instance="dropdown_term"] scratchpad show; [instance="dropdown_term"] move position center
+
+# python windows
+for_window 		[instance="dropdown_python"] floating enable
+for_window 		[instance="dropdown_python"] resize set 800 600
+for_window 		[instance="dropdown_python"] move scratchpad
+for_window 		[instance="dropdown_python"] border pixel 5
+bindsym $mod+p 	[instance="dropdown_python"] scratchpad show; [instance="dropdown_python"] move position center
+
+# spotify
+for_window 		            [class="[Ss]potify"] floating enable
+for_window 		            [class="[Ss]potify"] resize set 800 600
+for_window 		            [class="[Ss]potify"] move scratchpad
+for_window 		            [class="[Ss]potify"] border pixel 5
+bindsym $mod+$sub+Shift+m 	[class="[Ss]potify"] scratchpad show; [class="[Ss]potify"] move position center
+
+# ----------------------------------------------------------------------
+# 	Configuration
+# ----------------------------------------------------------------------
+# Assign application to workspace
+assign [class="Vmware"] $ws4
+assign [class="[Tt]uxGuitar"] $ws8
+assign [class="[Rr]ambox"] $ws5
+assign [class="MineTime"] $ws5
+assign [class="[Dd]iscord"] $ws5
+
+# Open specific applications in floating mode
+for_window [title="yad-calendar"] floating enable border pixel 1
+for_window [title="alsamixer"] floating enable border pixel 1
+for_window [class="Pavucontrol"] floating enable
+for_window [class="kmag"] floating enable border pixel 0
+for_window [class="kmag"] sticky enable
+for_window [class="kmag"] resize set 600 400
+for_window [class="kmag"] resize set 600 400
+
+for_window [urgent=latest] focus
+for_window [class="^.*"] border pixel 2
+
+# ----------------------------------------------------------------------
+# 	Keybinding
+# ----------------------------------------------------------------------
+# Basic
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# Script
+bindsym $mod+$sub+shift+d       exec  display-switcher
+bindsym $mod+$sub+shift+p       exec  display-switcher
+
+# Desktop
+bindsym $mod+Shift+t 			exec --no-startup-id pkill compton
+bindsym $mod+Ctrl+t  			exec --no-startup-id compton -b
+bindsym $sub+w 		 		exec --no-startup-id feh --bg-scale $(find /home/nvn/Pictures/wallpaper -type f | shuf -n 1)
+
+# Gaps
+gaps inner $inner_gaps
+gaps outer $outer_gaps
+bindsym $mod+i					gaps inner current plus 5
+bindsym $mod+Shift+i			gaps inner current minus 5
+bindsym $mod+g					gaps inner current toggle $inner_gaps; gaps outer current toggle $outer_gaps
+
+# Application
+bindsym $mod+d 					exec i3-dmenu-desktop --dmenu='rofi -dmenu -i'
+bindsym $mod+a 					exec --no-startup-id rofi -show
+bindsym $mod+q 					kill
+bindsym $mod+Return				exec $term
+bindsym $mod+b					exec --no-startup-id google-chrome --password-store=gnome
+bindsym $mod+Ctrl+m 			exec pavucontrol
+bindsym $mod+z 					exec --no-startup-id kmag
+bindsym $mod+x 					exec --no-startup-id arandr
+bindsym $mod+c                  exec --no-startup-id code
+
+# Sticky
+bindsym $mod+Shift+s 			sticky toggle
+bindsym $mod+Ctrl+s 			floating toggle; sticky toggle
+floating_modifier 				$mod
+
+# Navigate and move window
+bindsym $mod+h 					focus left
+bindsym $mod+Left 				focus left
+bindsym $mod+Shift+h 			move left
+bindsym $mod+Shift+Left 		move left
+
+bindsym $mod+j 					focus down
+bindsym $mod+Down 				focus down
+bindsym $mod+Shift+j 			move down
+bindsym $mod+Shift+Down 		move down
+
+bindsym $mod+k 					focus up
+bindsym $mod+Up 				focus up
+bindsym $mod+Shift+k 			move up
+bindsym $mod+Shift+Up 			move up
+
+bindsym $mod+l 					focus right
+bindsym $mod+Right 				focus right
+bindsym $mod+Shift+l			move right
+bindsym $mod+Shift+Right 		move right
+
+# Navigate throught workspace
+bindsym $mod+Tab 				workspace next
+bindsym $mod+Shift+Tab 			workspace prev
+
+# Split
+bindsym $mod+underscore 		split horizontal ;; exec $term
+bindsym $mod+shift+underscore	split vertical   ;; exec $term
+bindsym $mod+t					split toggle
+
+# Change view and layout
+bindsym $mod+f 					fullscreen toggle
+bindsym $mod+s 					layout stacking
+bindsym $mod+w 					layout tabbed
+bindsym $mod+e 					layout toggle split
+bindsym $sub+Shift+space 		floating toggle
+# change focus between tiling / floating windows
+bindsym $sub+Tab 				focus mode_toggle
+
+# switch to workspace
+bindsym $mod+1 			workspace $ws1
+bindsym $mod+2 			workspace $ws2
+bindsym $mod+3 			workspace $ws3
+bindsym $mod+4 			workspace $ws4
+bindsym $mod+5 			workspace $ws5
+bindsym $mod+6 			workspace $ws6
+bindsym $mod+7 			workspace $ws7
+bindsym $mod+8 			workspace $ws8
+bindsym $mod+9 			workspace $ws9
+bindsym $mod+0 			workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 	move container to workspace $ws1
+bindsym $mod+Shift+2 	move container to workspace $ws2
+bindsym $mod+Shift+3 	move container to workspace $ws3
+bindsym $mod+Shift+4 	move container to workspace $ws4
+bindsym $mod+Shift+5 	move container to workspace $ws5
+bindsym $mod+Shift+6 	move container to workspace $ws6
+bindsym $mod+Shift+7 	move container to workspace $ws7
+bindsym $mod+Shift+8 	move container to workspace $ws8
+bindsym $mod+Shift+9 	move container to workspace $ws9
+bindsym $mod+Shift+0 	move container to workspace $ws10
+
+# ----------------------------------------------------------------------
+#	More keybinding
+# ----------------------------------------------------------------------
+# start main stack
+bindsym $mod+Shift+m   	layout splitv;\
+                       	move left;\
+                       	resize grow right 20 px or 20 ppt;\
+                       	split v;\
+                       	layout stacking
+
+# These bindings trigger as soon as you enter the resize mode
+bindsym $mod+r 			mode "resize"
+mode "resize" {
+        bindsym h resize shrink width 5 px or 5 ppt
+        bindsym j resize grow height 5 px or 5 ppt
+        bindsym k resize shrink height 5 px or 5 ppt
+        bindsym l resize grow width 5 px or 5 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 5 px or 5 ppt
+        bindsym Down resize grow height 5 px or 5 ppt
+        bindsym Up resize shrink height 5 px or 5 ppt
+        bindsym Right resize grow width 5 px or 5 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym F4 mode "$mode_system"
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id xflock4, mode "default"
+    bindsym e exec --no-startup-id xfce4-session-logout --logout, mode "default"
+    bindsym s exec --no-startup-id xfce4-session-logout --suspend, mode "default"
+    bindsym h exec --no-startup-id xfce4-session-logout --hibernate, mode "default"
+    bindsym r exec --no-startup-id xfce4-session-logout --reboot, mode "default"
+    bindsym p exec --no-startup-id xfce4-session-logout, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym F4 mode "default"
+}
+
+bindsym $mod+m mode "$mouse"
+set $mouse Mouse
+mode "$mouse" {
+	# set your three speeds here
+	set $slow 1
+	set $quick 10
+	set $fast 50
+
+	# Mouse movement (slow/fine-tuned) -- vim keybindings
+	bindsym h exec xdotool mousemove_relative -- -$slow 0
+	bindsym j exec xdotool mousemove_relative 0 $slow
+	bindsym k exec xdotool mousemove_relative -- 0 -$slow
+	bindsym l exec xdotool mousemove_relative $slow 0
+
+	# Mouse movement (slow/fine-tuned) -- arrow keys
+	bindsym Left exec xdotool mousemove_relative -- -$slow 0
+	bindsym Down exec xdotool mousemove_relative 0 $slow
+	bindsym Up exec xdotool mousemove_relative -- 0 -$slow
+	bindsym Right exec xdotool mousemove_relative $slow 0
+
+	# Mouse movement (quicker) -- vim keybindings
+	bindsym Shift+h exec xdotool mousemove_relative -- -$quick 0
+	bindsym Shift+j exec xdotool mousemove_relative 0 $quick
+	bindsym Shift+k exec xdotool mousemove_relative -- 0 -$quick
+	bindsym Shift+l exec xdotool mousemove_relative $quick 0
+
+	# Mouse movement (quicker) -- arrow keys
+	bindsym Shift+Left exec xdotool mousemove_relative -- -$quick 0
+	bindsym Shift+Down exec xdotool mousemove_relative 0 $quick
+	bindsym Shift+Up exec xdotool mousemove_relative -- 0 -$quick
+	bindsym Shift+Right exec xdotool mousemove_relative $quick 0
+
+	# Mouse movement (fast) -- vim keybindings
+	bindsym Shift+$sub+h exec xdotool mousemove_relative -- -$fast 0
+	bindsym Shift+$sub+j exec xdotool mousemove_relative 0 $fast
+	bindsym Shift+$sub+k exec xdotool mousemove_relative -- 0 -$fast
+	bindsym Shift+$sub+l exec xdotool mousemove_relative $fast 0
+
+	# Mouse movement (fast) -- arrow keys
+	bindsym Shift+$sub+Left exec xdotool mousemove_relative -- -$fast 0
+	bindsym Shift+$sub+Down exec xdotool mousemove_relative 0 $fast
+	bindsym Shift+$sub+Up exec xdotool mousemove_relative -- 0 -$fast
+	bindsym Shift+$sub+Riht exec xdotool mousemove_relative $fast 0
+
+	# Left Click
+	bindsym f exec xdotool click 1
+	# Middle Click
+	bindsym d exec xdotool click 2
+	# Right Click
+	bindsym s exec xdotool click 3
+
+	# Left Click-and-drag
+	bindsym Shift+f exec xdotool mousedown 1
+	# Middle Click-and-drag
+	bindsym Shift+d exec xdotool mousedown 2
+	# Right Click-and-drag
+	bindsym Shift+s exec xdotool mousedown 3
+
+	# Left Drag release
+	bindsym $sub+f exec xdotool mouseup 1
+	# Middle Drag release
+	bindsym $sub+d exec xdotool mouseup 2
+	# Right Drag release
+	bindsym $sub+s exec xdotool mouseup 3
+
+	# return to normal keybindings -- IMPORTANT!!
+	bindsym Escape mode "default"
+    bindsym Return mode "default"
+    bindsym $mod+m mode "default"
+}
+
+# ----------------------------------------------------------------------
+#	Media control
+# ----------------------------------------------------------------------
+# Use pactl to adjust volume in PulseAudio.
+bindsym XF86AudioRaiseVolume 	exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && pactl set-sink-mute @DEFAULT_SINK@ 0
+bindsym $mod+$sub+F3            exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && pactl set-sink-mute @DEFAULT_SINK@ 0
+bindsym XF86AudioLowerVolume 	exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && pactl set-sink-mute @DEFAULT_SINK@ 0
+bindsym $mod+$sub+F2            exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && pactl set-sink-mute @DEFAULT_SINK@ 0
+bindsym XF86AudioMute			exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym $mod+$sub+F1			exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym $mod+$sub+F7			exec --no-startup-id exec poly-microphone
+bindsym $mod+$sub+shift+v       exec --no-startup-id exec sink-switcher
+
+# Sreen brightness controls
+bindsym XF86MonBrightnessUp		exec xbacklight -inc 5
+bindsym $mod+$sub+F12           exec xbacklight -inc 5
+bindsym XF86MonBrightnessDown	exec xbacklight -dec 5
+bindsym $mod+$sub+F11       	exec xbacklight -dec 5
+
+# Media player
+bindsym XF86AudioPlay   exec playerctl play-pause && polybar-msg hook playpause $([ "$(playerctl status)" = "Playing" ] && echo 1 || echo 2)
+bindsym $mod+$sub+F5    exec playerctl play-pause && polybar-msg hook playpause $([ "$(playerctl status)" = "Playing" ] && echo 1 || echo 2)
+bindsym XF86AudioNext   exec playerctl next
+bindsym $mod+$sub+F6    exec playerctl next
+bindsym XF86AudioPrev   exec playerctl previous
+bindsym $mod+$sub+F4    exec playerctl previous
+
+bindsym --release Print exec --no-startup-id gnome-screenshot
+bindsym --release shift+Print exec --no-startup-id gnome-screenshot -a
+bindsym --release ctrl+shift+Print exec --no-startup-id gnome-screenshot -w

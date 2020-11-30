@@ -1,0 +1,85 @@
+{
+  // Appearance
+  "suggest.completionItemKindLabels": {
+    "text": "t",
+    "method": "m",
+    "function": ""
+  },
+  "diagnostic.errorSign": " ",
+  "diagnostic.warningSign": " ",
+  "diagnostic.infoSign": "",
+  "diagnostic.hintSign": " ",
+  "list.indicator": ">",
+  "list.selectedSignText": " ",
+  "coc.preferences.hoverTarget": "float",
+
+  // Formatting
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "markdown",
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "graphql",
+    "html",
+    "yaml",
+    "json",
+    "python",
+    "java"
+  ],
+
+  // Autocomplete options
+  "snippets.ultisnips.directories": ["UltiSnips", "~/.config/nvim/snips"],
+  "python.linting.enabled": false,
+  "python.linting.pylintEnabled": false,
+  "python.formatting.provider": "autopep8",
+
+  // LSP
+  "clangd.path": "/home/nvn/.config/coc/extensions/coc-clangd-data/install/11.0.0/clangd_11.0.0/bin/clangd",
+  "diagnostic.filetypeMap": {
+    "typescript.tsx": "typescriptreact",
+    "javascript.jsx": "javascriptreact",
+    ".aliasrc": "sh"
+  },
+
+  //----------------------------------------------------------------------
+  //    Extension setup
+  //----------------------------------------------------------------------
+  // coc-emmet
+  "emmet.includeLanguages": {
+    "vue-html": "html",
+    "typescript": "typescriptreact",
+    "javascript": "javascriptreact"
+  },
+
+  // coc-spell-checker
+  "cSpell.numSuggestions": 5,
+  "cSpell.minWordLength": 4,
+  "cSpell.ignorePaths": [
+    "node_modules", // this will ignore anything the node_modules directory
+    ".git" // Ignore the .git directory
+  ],
+  "cSpell.userWords": [
+    "Fira",
+    "aliasrc",
+    "autopep",
+    "browserslist",
+    "clangd",
+    "clsx",
+    "dsznajder",
+    "hzchirs",
+    "junegunn",
+    "mattn",
+    "mhinz",
+    "mygroup",
+    "neoclide",
+    "nvim",
+    "pylint",
+    "scrooloose",
+    "startify",
+    "tabnine",
+    "tpope",
+    "ultisnips",
+    "vimlsp"
+  ]
+}
