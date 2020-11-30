@@ -6,7 +6,21 @@ alias e="exit"
 
 # Dotfiles manager
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
-alias dot-backup="sed 's/[ \t]*\#.*//g ; /^[ \t]*$/d ; s#\$HOME#$HOME#g' $HOME/.config/.backuplist | xargs /usr/bin/git --git-dir="$HOME"/dotfiles/ --work-tree="$HOME" add"
+dots() {
+    case $1 in
+        add)
+            sed 's/[ \t]*\#.*//g ; /^[ \t]*$/d ; s#$HOME#'"$HOME"'#g' $HOME/.config/.backuplist | xargs /usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME add
+            ;;
+        backup)
+            sed 's/[ \t]*\#.*//g ; /^[ \t]*$/d ; s#$HOME#'"$HOME"'#g' $HOME/.config/.backuplist | xargs /usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME add
+            config commit -m "New backup `date +'%Y-%m-%d %H:%M:%S'`"
+            config push origin master
+            ;;
+        *)
+            config status
+            ;;
+    esac
+}
 
 # Navigating
 alias ..='cd ..'
