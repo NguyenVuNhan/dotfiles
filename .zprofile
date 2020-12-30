@@ -1,4 +1,9 @@
 PATH="$HOME/.local/bin:$HOME/.local/share/bin:$PATH"
+PATH="/home/nvn/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/nvn/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/nvn/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/nvn/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/nvn/perl5"; export PERL_MM_OPT;
 
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
@@ -51,3 +56,4 @@ export PATH="$PATH:$ANDROID_HOME/emulator"
 export PATH="$PATH:$ANDROID_HOME/tools"
 export PATH="$PATH:$ANDROID_HOME/tools/bin"
 export PATH="$PATH:$ANDROID_HOME/platform-tools"
+source "/home/nvn/.local/share/cargo/env"

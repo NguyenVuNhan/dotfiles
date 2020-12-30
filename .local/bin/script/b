@@ -26,7 +26,15 @@ target_opener() {
         web)
             firefox --new-tab "$value" ;;
         file)
-            st -e $OPENER "$value" ;;
+            f=$(file -i "$value" | cut -d' ' -f2)
+            echo $f
+            case "$f" in
+                "text/plain;")
+                    st -e nvim "$value" ;;
+                *)
+                    st -e $OPENER "$value"
+            esac
+            ;;
         dir)
             cd "$value" && st ;;
         cmd)

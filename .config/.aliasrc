@@ -1,8 +1,41 @@
-alias poff='sudo poweroff'
-alias v=nvim
+# ======================================================================
+#   Basic
+# ======================================================================
+alias v=${EDITOR:-vi}
 alias rscp="rsync -aq --P"
 alias o="xdg-open"
 alias e="exit"
+
+# Navigating
+alias ..='cd ..'
+
+# Enable color
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# ls alias
+alias ls='ls --color=auto'
+alias la='ls -A'
+alias l='ls -CF'
+alias lh='ls -Ad .*'
+alias ll='ls -alF'
+
+# Config file
+alias aliasrc='$EDITOR $HOME/.config/.aliasrc'
+alias shortcutrc='$EDITOR $HOME/.config/.shortcutrc'
+alias zshrc='$EDITOR $HOME/.config/zsh/.zshrc'
+alias vimrc='$EDITOR $HOME/.config/nvim/init.vim'
+alias tmuxrc='$EDITOR $HOME/.config/tmux/.tmux.conf'
+alias i3wmrc='$EDITOR $HOME/.config/i3/config'
+
+# System administrations
+alias update='sudo apt-get -y update && sudo apt-get -y upgrade'
+
+# Copy to system clipboard
+alias sysclip="xclip -selection clipboard"
 
 # Dotfiles manager
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
@@ -22,53 +55,132 @@ dots() {
     esac
 }
 
-# Navigating
-alias ..='cd ..'
-
-# Enable color
-alias dir='dir --color=auto'
-alias vdir='vdir --color=auto'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-
-# ls alias
-alias ls='ls --color=auto'
-alias la='ls -A'
-alias l='ls -CF'
-alias lh='ls -Ad .*'
-alias ll='ls -alF'
-
-# Config
-alias aliasrc='$EDITOR $HOME/.config/.aliasrc'
-alias shortcutrc='$EDITOR $HOME/.config/.shortcutrc'
-alias zshrc='$EDITOR $HOME/.config/zsh/.zshrc'
-alias vimrc='$EDITOR $HOME/.config/nvim/init.vim'
-alias tmuxrc='$EDITOR $HOME/.config/tmux/.tmux.conf'
-alias i3wmrc='$EDITOR $HOME/.config/i3/config'
-
-alias update='sudo apt-get -y update && sudo apt-get -y upgrade'
-
 # fzf
-alias cdfzf='cd $(fzf)'
-alias vfzf='$EDITOR $(fzf)'
+alias cf='cd $(fzf)'
+vf() {
+    f=$(fzf)
+    [[ -z "$f" ]] && return 0 || $EDITOR $f
+}
 
+# Navigate
+cdn() {
+	workingDir=/mnt/NhanData
+	case $1 in
+	'')
+		cd $workingDir/
+	;;
+	s)
+		cd $workingDir/Study/$2
+	;;
+  	p)
+		cd $workingDir/CodingSpace/Project/$2
+	;;
+	l)
+		cd $workingDir/CodingSpace/Lab
+	;;
+	*)
+		cd $workingDir/$1
+	;;
+	esac
+}
+
+# ======================================================================
+#   Widgets
+# ======================================================================
+# File copy, transfer
+alias rsync="rsync --info=progress2 --info=name0"
+alias sshcp="rsync -avz -e 'ssh'"
+alias rcp="rsync -azh --exclude node_modules"
 # fun
 alias iloveyou='figlet -ctW I LOVE YOU | lolcat -a -s 30 -F 0.2'
-alias n2s='cdn s N2S && o $(ls *.mp4 | shuf -n 1) > /dev/null && cd -'
 
-# Copy to system clipboard
-alias sysclip="xclip -selection clipboard"
+# ======================================================================
+#   Docker
+# ======================================================================
+# Docker
+function dnames-fn {
+	for ID in `docker ps | awk '{print $1}' | grep -v 'CONTAINER'`
+	do
+    	docker inspect $ID | grep Name | head -1 | awk '{print $2}' | sed 's/,//g' | sed 's%/%%g' | sed 's/"//g'
+	done
+}
 
-# Other
-alias google-chrome="google-chrome --password-store=gnome"
-alias SyncSnip="for f in ~/.config/nvim/UltiSnips/*.snippets; do convert-snippets $f ; done;"
+function dip-fn {
+    echo "IP addresses of all named running containers"
 
-# Docker alias due to my lizyness
-alias docker="sudo docker"
-alias docker-compose="sudo docker-compose"
+    for DOC in `dnames-fn`
+    do
+        IP=`docker inspect $DOC | grep -m3 IPAddress | cut -d '"' -f 4 | tr -d "\n"`
+        OUT+=$DOC'\t'$IP'\n'
+    done
+    echo $OUT|column -t
+}
 
-# Special script require to sourcing
-alias bfm=". bfm"
+function dex-fn {
+	docker exec -it $1 ${2:-bash}
+}
 
-hc() { eval $(tac $XDG_CACHE_HOME/zsh/history | cut -d";" -f2- | fzf); }
+function di-fn {
+	docker inspect $1
+}
+
+function dl-fn {
+	docker logs -f $1
+}
+
+function drun-fn {
+	docker run -it $1 $2
+}
+
+function dcr-fn {
+	docker-compose run $@
+}
+
+function dsr-fn {
+	docker stop $1;docker rm $1
+}
+
+function drmc-fn {
+       docker rm $(docker ps --all -q -f status=exited)
+}
+
+function drmid-fn {
+       imgs=$(docker images -q -f dangling=true)
+       [ ! -z "$imgs" ] && docker rmi "$imgs" || echo "no dangling images."
+}
+
+# in order to do things like dex $(dlab label) sh
+function dlab {
+       docker ps --filter="label=$1" --format="{{.ID}}"
+}
+
+function dc-fn {
+        docker-compose $*
+}
+
+function d-aws-cli-fn {
+    docker run \
+           -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+           -e AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION \
+           -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+           amazon/aws-cli:latest $1 $2 $3
+}
+
+alias daws=d-aws-cli-fn
+alias dc=dc-fn
+alias dcu="docker-compose up -d"
+alias dcd="docker-compose down"
+alias dcr=dcr-fn
+alias dex=dex-fn
+alias di=di-fn
+alias dim="docker images"
+alias dip=dip-fn
+alias dl=dl-fn
+alias dnames=dnames-fn
+alias dps="docker ps"
+alias dpsa="docker ps -a"
+alias drmc=drmc-fn
+alias drmid=drmid-fn
+alias drun=drun-fn
+alias dsp="docker system prune --all"
+alias dsr=dsr-fn

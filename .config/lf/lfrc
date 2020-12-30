@@ -103,7 +103,7 @@ map bm bookmark_jump
 
 # Basic Functions
 map . set hidden!
-map DD delete
+map dd delete
 map p paste
 map x cut
 map y copy
