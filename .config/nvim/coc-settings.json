@@ -1,4 +1,31 @@
 {
+  // File browsing
+  "explorer.icon.enableNerdfont": true,
+  "explorer.previewAction.onHover": false,
+  "explorer.file.showHiddenFiles": true,
+  "explorer.git.showIgnored": false,
+  "explorer.file.hiddenRules": {
+      "extensions": [
+          "o",
+          "a",
+          "obj",
+          "pyc"
+      ],
+      "patternMatches": [
+          "^\\.",
+          "node_modules"
+      ]
+  },
+  "explorer.keyMappings.global": {
+    "<cr>": ["expandable?", "expand", "open"],
+    "s": "open:vsplit",
+    "i": "open:split",
+    "U": "gotoParent",
+    "C": "cd",
+    "x": "collapse",
+    "X": "collapse:recursive"
+  },
+
   // Appearance
   "suggest.completionItemKindLabels": {
     "text": "t",
@@ -60,7 +87,9 @@
     ".git" // Ignore the .git directory
   ],
   "cSpell.userWords": [
+    "Devicons",
     "Fira",
+    "Nerdfont",
     "aliasrc",
     "autopep",
     "browserslist",

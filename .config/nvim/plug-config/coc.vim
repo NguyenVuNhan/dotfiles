@@ -60,3 +60,6 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " ----------------------------------------------------------------------
 "  coc-pair
 autocmd FileType tex let b:coc_pairs = [["$", "$"]]
+
+" coc-explorer
+nnoremap <C-b> :CocCommand explorer<CR>

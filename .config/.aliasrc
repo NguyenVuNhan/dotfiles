@@ -93,6 +93,7 @@ alias sshcp="rsync -avz -e 'ssh'"
 alias rcp="rsync -azh --exclude node_modules"
 # fun
 alias iloveyou='figlet -ctW I LOVE YOU | lolcat -a -s 30 -F 0.2'
+alias clock="watch -c -t -n1 'date +%T | figlet -ctf big'"
 
 # ======================================================================
 #   Docker
@@ -168,7 +169,7 @@ function d-aws-cli-fn {
 
 alias daws=d-aws-cli-fn
 alias dc=dc-fn
-alias dcu="docker-compose up -d"
+alias dcu="docker-compose up"
 alias dcd="docker-compose down"
 alias dcr=dcr-fn
 alias dex=dex-fn

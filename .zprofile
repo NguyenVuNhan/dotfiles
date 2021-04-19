@@ -9,6 +9,7 @@ export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 export XIM_PROGRAM=/usr/bin/ibus-daemon
+export MOZ_X11_EGL=1
 
 # Default programs:
 export EDITOR="nvim"
@@ -17,6 +18,7 @@ export BROWSER="firefox"
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_USER_CONFIG_DIR="$XDG_CONFIG_HOME"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"

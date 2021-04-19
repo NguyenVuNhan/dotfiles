@@ -5,7 +5,8 @@ call plug#begin()
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'MattesGroeger/vim-bookmarks'
-    Plug 'scrooloose/nerdtree'
+    Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+    " Plug 'scrooloose/nerdtree'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -15,7 +16,6 @@ call plug#begin()
     Plug 'vim-airline/vim-airline'
 call plug#end()
 
-source $XDG_CONFIG_HOME/nvim/plug-config/nerdtree.vim
 source $XDG_CONFIG_HOME/nvim/plug-config/bookmarks.vim
 source $XDG_CONFIG_HOME/nvim/plug-config/commentary.vim
 source $XDG_CONFIG_HOME/nvim/plug-config/fzf.vim
